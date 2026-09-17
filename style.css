@@ -103,32 +103,47 @@ img { max-width: 100%; }
   gap: 32px;
 }
 
+/* The bar must stay on one line at every width — four suits reading as a row is
+   the whole point of it, and wrapping to 2x2 reads as broken.
+   So every dimension inside is in em, and the font-size alone scales with the
+   viewport: the bar then shrinks as a single unit, exactly like an image would.
+   min() caps it at the drawn 19px, so the design is untouched at its own width.
+   Below the cap the coefficient is deliberately larger than 19/670: the design
+   spreads four items across 670 with room to spare, and on a phone that spare
+   room is better spent on legible type than on gaps. */
 .suitbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 19px 28px;
+  gap: 0.84em;
+  padding: 1em 1.47em;
   border: 1px solid var(--dark-two);
-  border-radius: 32px;
+  border-radius: 1.68em;
   background: var(--dark-one);
   box-shadow: 0 0 27px rgba(0, 0, 0, 0.8);
+  font-size: min(19px, calc((100vw - 2 * var(--gutter)) * 0.032));
+  /* The webfont loads with display:swap, and the system fallback sets wider than
+     Space Grotesk — enough to overflow a 320px phone for the first paint. The
+     coefficient above leaves room for that; this clips anything that still
+     escapes rather than letting it scroll the whole page sideways. */
+  overflow: hidden;
 }
 
 .suitbar__item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 19px;
+  gap: 0.53em;
+  font-size: 1em;
   font-weight: 700;
-  line-height: 24px;
+  line-height: 1.28;
   white-space: nowrap;
 }
 
 .suitbar__item img {
-  width: 29px;
-  height: 29px;
+  width: 1.53em;
+  height: 1.53em;
   display: block;
+  flex-shrink: 0;
 }
 
 .suitbar__item--red { color: var(--red-zero); }
@@ -303,15 +318,8 @@ h2 em,
   .logomark { width: min(320px, 100%); }
   .tagline { font-size: 20px; line-height: 28px; }
 
-  .suitbar {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px 24px;
-    padding: 16px 20px;
-    border-radius: 24px;
-  }
-  .suitbar__item { font-size: 16px; }
-  .suitbar__item img { width: 24px; height: 24px; }
+  /* The suit bar is deliberately untouched here: it scales itself through its
+     own font-size, so it needs no breakpoint and must not be allowed to wrap. */
 
   .phone {
     height: clamp(360px, 92vw, 670px);
