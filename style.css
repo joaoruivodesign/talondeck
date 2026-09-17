@@ -1,6 +1,10 @@
 /* TalonDeck site — tokens lifted from the app's asset catalog so the site and the
    app cannot drift apart. Any colour here has a matching .colorset in
-   TalonDeck/Design System/Assets.xcassets/Colors. */
+   TalonDeck/Design System/Assets.xcassets/Colors.
+
+   This file is served to three repos: talondeck (landing + card links),
+   talondeck-privacy and talondeck-support. The .doc rules belong to those two —
+   changing them changes the pages the App Store links to. */
 
 :root {
   --dark-zero: #191919;
@@ -10,8 +14,13 @@
   --base-white: #ffffff;
   --red-zero: #f44b4b;
 
+  /* The muted "=" between a suit and its media type on the black-suit tiles.
+     Not from the app palette — it exists only here, from the landing design. */
+  --suit-equals: #9497b1;
+
   --gutter: 20px;
-  --measure: 34rem;
+  --measure: 34rem;   /* reading width for the document pages */
+  --page: 670px;      /* content width for the landing page */
 }
 
 * { box-sizing: border-box; }
@@ -34,6 +43,8 @@ body {
 
 a { color: var(--red-zero); }
 
+img { max-width: 100%; }
+
 /* Buttons ---------------------------------------------------------------- */
 
 .button {
@@ -44,18 +55,284 @@ a { color: var(--red-zero); }
   color: var(--base-white);
   font-size: 16px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 20px;
   text-align: center;
   text-decoration: none;
 }
 
-.button--quiet {
-  background: transparent;
-  border: 2px solid var(--dark-one);
+/* Landing ---------------------------------------------------------------- */
+
+/* --page is the content width in the design (670), not the outer width. The gutter
+   is added outside it, so the content measures exactly 670 on a wide screen and the
+   gutter only starts eating in once the viewport is narrower than that. */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.hero { padding: 96px 0 72px; }
+
+.hero .wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.logomark {
+  width: 400px;
+  height: auto;
+  display: block;
+}
+
+.tagline {
+  margin: 0;
+  font-size: 24px;
+  line-height: 32px;
   color: var(--dark-three);
 }
 
-/* Document pages (privacy, support) -------------------------------------- */
+/* Showcase: the suit bar and the phone ----------------------------------- */
+
+.showcase .wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.suitbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 19px 28px;
+  border: 1px solid var(--dark-two);
+  border-radius: 32px;
+  background: var(--dark-one);
+  box-shadow: 0 0 27px rgba(0, 0, 0, 0.8);
+}
+
+.suitbar__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.suitbar__item img {
+  width: 29px;
+  height: 29px;
+  display: block;
+}
+
+.suitbar__item--red { color: var(--red-zero); }
+
+/* The screenshot is taller than its frame on purpose: it is clipped at the
+   bottom so the deck screen reads as continuing past the edge. */
+.phone {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 670px;
+  padding: 32px;
+  border: 1px solid var(--dark-two);
+  border-radius: 32px;
+  background: var(--dark-one);
+  overflow: hidden;
+}
+
+.phone img {
+  width: 435px;
+  height: auto;
+  border: 0.775px solid var(--dark-two);
+  border-radius: 39px;
+  box-shadow: 0 0 36px rgba(0, 0, 0, 0.8);
+}
+
+/* Bands: the two tile sections ------------------------------------------- */
+
+.band { padding: 56px 0; }
+
+.band .wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.band h2 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 40px;
+  text-align: center;
+}
+
+h2 em,
+.tile h3 em {
+  font-style: normal;
+  color: var(--red-zero);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--dark-one);
+}
+
+.tile p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.tile h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.tile__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tile__header img {
+  width: 28px;
+  height: 28px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Black suits take a muted equals; red suits take the accent. */
+.eq { color: var(--suit-equals); }
+.eq--red { color: var(--red-zero); }
+
+.grid--suits .tile { min-height: 116px; }
+.grid--suits .tile h3 { line-height: 32px; }
+
+.grid--decks .tile {
+  min-height: 126px;
+  padding: 24px;
+}
+
+/* Scoped to .tile so it outranks `.tile p`, which would otherwise win on
+   specificity and render the step number at the body size. */
+.tile .step {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 1.04px;
+  color: var(--red-zero);
+}
+
+/* Closer and footer ------------------------------------------------------ */
+
+.closer { padding: 64px 0 80px; }
+
+.closer .wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+}
+
+.closer p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.site-footer {
+  padding: 28px 0 calc(40px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--dark-one);
+  text-align: center;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--dark-two);
+}
+
+.site-footer .wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.site-footer a {
+  color: var(--dark-two);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.site-footer nav {
+  display: flex;
+  gap: 20px;
+}
+
+.site-footer p { margin: 0; }
+
+.disclaimer {
+  max-width: 420px;
+  line-height: 20px;
+}
+
+/* Narrow screens ---------------------------------------------------------
+   The landing page was designed at 1440 only. These rules keep it usable
+   below that until the mobile design lands. */
+
+@media (max-width: 700px) {
+  .hero { padding: 64px 0 48px; }
+  .logomark { width: min(320px, 100%); }
+  .tagline { font-size: 20px; line-height: 28px; }
+
+  .suitbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 24px;
+    padding: 16px 20px;
+    border-radius: 24px;
+  }
+  .suitbar__item { font-size: 16px; }
+  .suitbar__item img { width: 24px; height: 24px; }
+
+  .phone {
+    height: clamp(360px, 92vw, 670px);
+    padding: 20px;
+    border-radius: 24px;
+  }
+  .phone img { width: min(435px, 100%); }
+
+  .band { padding: 40px 0; }
+  .band h2 { font-size: 26px; line-height: 32px; }
+
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .grid--suits .tile,
+  .grid--decks .tile { min-height: 0; }
+
+  .closer { padding: 48px 0 64px; }
+  .closer p { font-size: 18px; line-height: 27px; }
+}
+
+/* Document pages (privacy, support) --------------------------------------
+   Served to talondeck-privacy and talondeck-support. */
 
 .doc {
   max-width: var(--measure);
