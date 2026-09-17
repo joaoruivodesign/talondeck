@@ -1,1 +1,124 @@
+/* TalonDeck site — tokens lifted from the app's asset catalog so the site and the
+   app cannot drift apart. Any colour here has a matching .colorset in
+   TalonDeck/Design System/Assets.xcassets/Colors. */
 
+:root {
+  --dark-zero: #191919;
+  --dark-one: #353333;
+  --dark-two: #6c6c6c;
+  --dark-three: #d2cbcf;
+  --base-white: #ffffff;
+  --red-zero: #f44b4b;
+
+  --gutter: 20px;
+  --measure: 34rem;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--dark-zero);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--dark-zero);
+  color: var(--base-white);
+  font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--red-zero); }
+
+/* Buttons ---------------------------------------------------------------- */
+
+.button {
+  display: inline-block;
+  padding: 16px 28px;
+  border-radius: 8px;
+  background: var(--red-zero);
+  color: var(--base-white);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.button--quiet {
+  background: transparent;
+  border: 2px solid var(--dark-one);
+  color: var(--dark-three);
+}
+
+/* Document pages (privacy, support) -------------------------------------- */
+
+.doc {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 48px var(--gutter) 72px;
+}
+
+.doc__back {
+  display: inline-block;
+  margin-bottom: 32px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--dark-two);
+}
+
+.doc__back:hover { color: var(--dark-three); }
+
+.doc h1 {
+  margin: 0 0 8px;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.doc h2 {
+  margin: 44px 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.doc h3 {
+  margin: 28px 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark-three);
+}
+
+.doc p,
+.doc li { color: rgba(255, 255, 255, 0.72); }
+
+.doc ul { padding-left: 20px; }
+
+.doc li { margin-bottom: 6px; }
+
+.doc__updated {
+  margin: 0 0 32px;
+  font-size: 13px;
+  color: var(--dark-two);
+}
+
+.doc__lede { font-size: 17px; }
+
+hr {
+  margin: 48px 0 0;
+  border: 0;
+  border-top: 1px solid var(--dark-one);
+}
+
+.doc footer {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--dark-two);
+}

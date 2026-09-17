@@ -1,1 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#191919">
+<title>TalonDeck — Clean your media backlog</title>
+<meta name="description" content="Track movies, TV, books and games as a deck of cards. Draw what's next, play one at a time, and burn what you'll never finish.">
+<link rel="canonical" href="https://joaoruivodesign.github.io/talondeck/">
 
+<meta property="og:type" content="website">
+<meta property="og:title" content="TalonDeck — Clean your media backlog">
+<meta property="og:description" content="Track movies, TV, books and games as a deck of cards. Draw what's next, play one at a time, and burn what you'll never finish.">
+<meta property="og:url" content="https://joaoruivodesign.github.io/talondeck/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+
+  /* Hero ----------------------------------------------------------------- */
+
+  .hero {
+    position: relative;
+    padding: 72px 0 64px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: -20% -20% 40%;
+    pointer-events: none;
+    background: radial-gradient(50% 50% at 50% 40%, rgba(244, 75, 75, 0.2), transparent 70%);
+  }
+
+  .hero > * { position: relative; }
+
+  .wordmark {
+    margin: 0 0 20px;
+    font-size: clamp(44px, 12vw, 76px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .wordmark span { color: var(--red-zero); }
+
+  .tagline {
+    max-width: 22ch;
+    margin: 0 auto 36px;
+    font-size: clamp(18px, 4.6vw, 24px);
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* Screens -------------------------------------------------------------- */
+
+  .screens {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 8px 0 64px;
+  }
+
+  .screens img {
+    width: min(240px, 60vw);
+    border-radius: 20px;
+    border: 1px solid var(--dark-one);
+    display: block;
+  }
+
+  /* Sections ------------------------------------------------------------- */
+
+  section { padding: 56px 0; }
+
+  h2 {
+    margin: 0 0 32px;
+    font-size: clamp(26px, 6vw, 34px);
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  }
+
+  .tile {
+    padding: 24px;
+    border-radius: 12px;
+    background: var(--dark-one);
+  }
+
+  .tile h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .tile p {
+    margin: 0;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.66);
+  }
+
+  .tile__suit {
+    display: block;
+    margin-bottom: 14px;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .tile__suit--red { color: var(--red-zero); }
+
+  .loop { counter-reset: step; }
+
+  .loop .tile { position: relative; padding-top: 52px; }
+
+  .loop .tile::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--red-zero);
+  }
+
+  /* Closer --------------------------------------------------------------- */
+
+  .closer {
+    padding: 64px 0 80px;
+    text-align: center;
+  }
+
+  .closer p {
+    max-width: 30ch;
+    margin: 0 auto 32px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .site-footer {
+    padding: 28px 0 calc(40px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--dark-one);
+    text-align: center;
+    font-size: 13px;
+    color: var(--dark-two);
+  }
+
+  .site-footer a {
+    color: var(--dark-two);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .site-footer nav { margin-bottom: 12px; }
+
+  .site-footer nav a { margin: 0 10px; }
+
+  .disclaimer {
+    max-width: 46ch;
+    margin: 12px auto 0;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1 class="wordmark">Talon<span>Deck</span></h1>
+    <p class="tagline">Your media backlog, as a deck of cards.</p>
+    <a class="button" href="https://apps.apple.com/us/app/talondeck-media-tracker/id6781664803">Download on the App Store</a>
+  </div>
+</header>
+
+<!-- Screenshots hide themselves until the files exist, so the page is never broken.
+     Drop 1290x2796 (or any consistent size) exports into screens/ to light them up. -->
+<div class="screens wrap" id="screens">
+  <img src="screens/deck.png" alt="The TalonDeck deck screen" onerror="this.remove()">
+  <img src="screens/card.png" alt="A card's details" onerror="this.remove()">
+  <img src="screens/inplay.png" alt="The In Play row" onerror="this.remove()">
+</div>
+
+<main>
+  <section class="wrap">
+    <h2>Four suits, one deck</h2>
+    <div class="grid">
+      <div class="tile">
+        <span class="tile__suit">♠</span>
+        <h3>Movies</h3>
+        <p>Spades. Track the minutes you’ve watched.</p>
+      </div>
+      <div class="tile">
+        <span class="tile__suit tile__suit--red">♥</span>
+        <h3>TV Seasons</h3>
+        <p>Hearts. One season per card, episode by episode.</p>
+      </div>
+      <div class="tile">
+        <span class="tile__suit">♣</span>
+        <h3>Books</h3>
+        <p>Clubs. Pages read, whether paper or audio.</p>
+      </div>
+      <div class="tile">
+        <span class="tile__suit tile__suit--red">♦</span>
+        <h3>Games</h3>
+        <p>Diamonds. Hours against the time to beat.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2>Draw. Play. Finish — or burn it.</h2>
+    <div class="grid loop">
+      <div class="tile">
+        <h3>Draw Pile</h3>
+        <p>Everything you mean to get to. Search once, and it’s a card.</p>
+      </div>
+      <div class="tile">
+        <h3>In Play</h3>
+        <p>One active card per suit. A limit is the point — it’s what stops a backlog becoming a wall.</p>
+      </div>
+      <div class="tile">
+        <h3>Completed &amp; Burn</h3>
+        <p>Rank what you finished. Burn what you won’t, at whatever percentage you gave up — guilt-free.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="closer">
+    <div class="wrap">
+      <p>No accounts. No ads. No tracking. Your deck stays on your device.</p>
+      <a class="button" href="https://apps.apple.com/us/app/talondeck-media-tracker/id6781664803">Get TalonDeck</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav>
+      <a href="support/">Support</a>
+      <a href="privacy/">Privacy Policy</a>
+      <a href="mailto:talondeck@gmail.com">Contact</a>
+    </nav>
+    <p>© 2026 João Ruivo</p>
+    <p class="disclaimer">This product uses the TMDB API, the IGDB API and the Open Library API but it is not endorsed or certified by any of those companies.</p>
+  </div>
+</footer>
+
+<script>
+  // Every screenshot removes itself if its file is missing; once they have all gone the
+  // strip is just dead vertical space, so it goes too. Keeps the page presentable
+  // before any exports exist.
+  window.addEventListener("load", function () {
+    var screens = document.getElementById("screens");
+    if (screens && !screens.querySelector("img")) screens.remove();
+  });
+</script>
+
+</body>
+</html>
