@@ -11,23 +11,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <style>
+  /* Card-page styling lives here rather than in style.css: that file is also served
+     to the privacy and support repos, and none of this applies to them. */
+
   body {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 24px;
-    padding: 32px var(--gutter) calc(32px + env(safe-area-inset-bottom));
+    padding: 32px 25px calc(32px + env(safe-area-inset-bottom));
   }
 
+  /* A wide, tall ellipse low on the page — the values are the design's radial
+     gradient converted from its 390x844 frame to percentages. */
   .glow {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(60% 40% at 50% 34%, rgba(244, 75, 75, 0.18), transparent 70%);
+    background: radial-gradient(45.5% 80.6% at 50% 75.8%,
+                rgba(244, 75, 75, 0.18) 0%, rgba(244, 75, 75, 0) 100%);
   }
 
-  main {
+  .content {
     position: relative;
     width: 100%;
     max-width: 340px;
@@ -38,36 +44,150 @@
     text-align: center;
   }
 
-  .eyebrow {
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .masthead img {
+    width: 250px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .masthead p {
     margin: 0;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--red-zero);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--dark-three);
   }
 
-  /* 64:88, the deck's card ratio. */
-  .poster {
-    width: 176px;
+  /* The card ---------------------------------------------------------------
+     Every dimension is a ratio of --card-w, so the card scales as one piece.
+     The corner markers are the app's own asset catalog SVGs, and they carry the
+     white edge bars, so they sit outside the art and overlap the card's border. */
+
+  /* The white edge is the card's own background with the face inset on top of it,
+     not a CSS border. A border would be rounded to whole pixels by the browser
+     while the corner offsets kept the exact value, leaving the markers hanging
+     half a pixel outside the card. */
+  .card {
+    --card-w: 176px;
+    --card-edge: calc(var(--card-w) * 0.02593);
+    position: relative;
+    width: var(--card-w);
     aspect-ratio: 64 / 88;
-    border-radius: 8px;
-    border: 2px solid var(--base-white);
-    background: var(--dark-one) center / cover no-repeat;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    background: var(--base-white);
+    border-radius: calc(var(--card-w) * 0.05187);
+    box-shadow: 0 0 calc(var(--card-w) * 0.05187) rgba(0, 0, 0, 0.5);
+    flex-shrink: 0;
   }
 
-  h1 {
+  .card__face {
+    position: absolute;
+    inset: var(--card-edge);
+    border-radius: calc(var(--card-w) * 0.026);
+    overflow: hidden;
+  }
+
+  /* Seen only where the artwork does not cover it — a missing poster still reads
+     as that suit's card rather than as a hole. */
+  .card--spades .card__face,
+  .card--clubs .card__face { background: var(--base-white); }
+
+  .card--hearts .card__face,
+  .card--diamonds .card__face { background: var(--red-zero); }
+
+  .card__art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__corner {
+    position: absolute;
+    width: calc(var(--card-w) * 0.3372);
+    height: auto;
+  }
+
+  .card__corner--tl { top: 0; left: 0; }
+
+  .card__corner--br {
+    bottom: 0;
+    right: 0;
+    transform: rotate(180deg);
+  }
+
+  /* The empty state's fanned deck ------------------------------------------
+     Four dashed slots overlapping to exactly 340 wide. The widths and the
+     negative margin are percentages of that, so the fan scales with the column
+     instead of overflowing a narrow phone. */
+
+  .deck {
+    display: flex;
+    width: 100%;
+  }
+
+  .deck__slot {
+    position: relative;
+    width: 51.765%;
+    aspect-ratio: 64 / 88;
+    flex-shrink: 0;
+    border: 2.282px dashed var(--base-white);
+    border-radius: 4px;
+    background: var(--dark-zero);
+  }
+
+  .deck__slot:not(:last-child) { margin-right: -35.686%; }
+
+  /* Ratios of the slot, not fixed pixels, so the markers shrink with the fan on a
+     narrow phone instead of growing relatively larger. Percentage insets resolve
+     against the slot's width horizontally and its height vertically, hence the
+     two different numbers for what is a square offset in the design. */
+  .deck__slot img {
+    position: absolute;
+    width: 15.97%;
+    height: auto;
+  }
+
+  .deck__slot img:first-of-type { top: 5.77%; left: 7.99%; }
+
+  .deck__slot img:last-of-type {
+    bottom: 5.77%;
+    right: 7.99%;
+    transform: rotate(180deg);
+  }
+
+  /* Title and actions ------------------------------------------------------ */
+
+  .titleblock {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .titleblock h1 {
     margin: 0;
     font-size: 26px;
     font-weight: 700;
-    line-height: 1.15;
+    line-height: 30px;
+    /* Capped so a long title cannot push the buttons below the fold. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .subtitle {
-    margin: 4px 0 0;
+  .titleblock p {
+    margin: 0;
     font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
+    line-height: 22px;
   }
 
   .actions {
@@ -76,86 +196,125 @@
     align-items: center;
     gap: 14px;
     width: 100%;
-    margin-top: 4px;
   }
 
   .actions .button { width: 100%; }
 
   .secondary {
     font-size: 14px;
+    line-height: 20px;
     color: var(--dark-three);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
-  footer {
-    position: relative;
-    font-size: 12px;
-    color: var(--dark-two);
-  }
-
-  footer a { color: var(--dark-two); }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <div class="glow"></div>
 
-<main>
-  <p class="eyebrow">Shared card</p>
-  <div class="poster" id="poster" role="img" aria-label="Cover art"></div>
-  <div>
-    <h1 id="title">A card from TalonDeck</h1>
-    <p class="subtitle" id="subtitle"></p>
+<main class="content">
+  <div class="masthead">
+    <img src="../assets/logomark.svg" alt="TalonDeck" width="250" height="39">
+    <p>Interactive media tracker</p>
   </div>
+
+  <div class="card" id="card" hidden>
+    <div class="card__face">
+      <img class="card__art" id="cardArt" alt="" hidden>
+    </div>
+    <img class="card__corner card__corner--tl" id="cornerTL" src="" alt="">
+    <img class="card__corner card__corner--br" id="cornerBR" src="" alt="">
+  </div>
+
+  <div class="deck" id="deck" hidden>
+    <div class="deck__slot">
+      <img src="../assets/empty-spades.svg" alt="" width="27" height="27">
+      <img src="../assets/empty-spades.svg" alt="" width="27" height="27">
+    </div>
+    <div class="deck__slot">
+      <img src="../assets/empty-hearts.svg" alt="" width="27" height="27">
+      <img src="../assets/empty-hearts.svg" alt="" width="27" height="27">
+    </div>
+    <div class="deck__slot">
+      <img src="../assets/empty-clubs.svg" alt="" width="27" height="27">
+      <img src="../assets/empty-clubs.svg" alt="" width="27" height="27">
+    </div>
+    <div class="deck__slot">
+      <img src="../assets/empty-diamonds.svg" alt="" width="27" height="27">
+      <img src="../assets/empty-diamonds.svg" alt="" width="27" height="27">
+    </div>
+  </div>
+
+  <div class="titleblock">
+    <h1 id="title">Add to TalonDeck</h1>
+    <p id="subtitle">All your media under one app</p>
+  </div>
+
   <div class="actions">
-    <a class="button" id="install" href="#">Get TalonDeck</a>
+    <a class="button" id="install" href="https://apps.apple.com/us/app/talondeck-media-tracker/id6781664803">Get TalonDeck</a>
     <a class="secondary" id="open" href="#">Already have the app? Open it</a>
   </div>
 </main>
 
-<footer><a href="../">TalonDeck</a> — your media backlog, as a deck of cards</footer>
-
 <script>
-  var APP_STORE_URL = "https://apps.apple.com/us/app/talondeck-media-tracker/id6781664803";
   var APP_SCHEME = "talondeck://add";
 
   // Params travel in the fragment, not the query string: a fragment is never sent in
   // the HTTP request, so a shared card's title never reaches GitHub's servers or logs.
   var params = new URLSearchParams(location.hash.slice(1));
 
-  var KIND_LABELS = { movie: "Movie", tv: "TV Season", book: "Book", game: "Game" };
+  var SUITS = { movie: "spades", tv: "hearts", book: "clubs", game: "diamonds" };
+  var ID_KEYS = ["tmdb", "imdb", "igdb", "isbn", "olid"];
 
   var title = params.get("t");
   var kind = params.get("k");
-  var year = params.get("y");
+  // The card's own subtitle, passed through as the app renders it: a year for a
+  // movie, a platform for a game, an author for a book. Rebuilding it from parts
+  // here would mean two implementations of the same rule, drifting.
+  var subtitle = params.get("s");
   var poster = params.get("p");
+  var suit = SUITS[kind];
 
-  if (title) {
+  var hasPayload = ID_KEYS.some(function (key) { return params.get(key); });
+
+  // The card state needs something to show; anything less falls back to the
+  // empty deck, which reads as an invitation rather than as a broken page.
+  if (title && suit) {
+    var card = document.getElementById("card");
+    var tl = document.getElementById("cornerTL");
+    var br = document.getElementById("cornerBR");
+    tl.src = br.src = "../assets/corner-" + suit + ".svg";
+    card.classList.add("card--" + suit);
+    card.hidden = false;
+
+    if (poster && /^https:\/\//.test(poster)) {
+      var art = document.getElementById("cardArt");
+      art.src = poster;
+      art.alt = title;
+      art.hidden = false;
+      // A poster that fails to load leaves the suit-coloured card, not a broken icon.
+      art.onerror = function () { art.remove(); };
+    }
+
     document.getElementById("title").textContent = title;
+    var subtitleEl = document.getElementById("subtitle");
+    if (subtitle) {
+      subtitleEl.textContent = subtitle;
+    } else {
+      subtitleEl.remove();
+    }
     document.title = title + " — Add to TalonDeck";
+  } else {
+    document.getElementById("deck").hidden = false;
   }
-
-  var subtitleParts = [];
-  if (kind && KIND_LABELS[kind]) subtitleParts.push(KIND_LABELS[kind]);
-  if (year) subtitleParts.push(year);
-  document.getElementById("subtitle").textContent = subtitleParts.join(" · ");
-
-  if (poster && /^https:\/\//.test(poster)) {
-    document.getElementById("poster").style.backgroundImage = 'url("' + poster.replace(/"/g, "%22") + '")';
-  }
-
-  document.getElementById("install").href = APP_STORE_URL;
-
-  // The app link is only offered when the fragment actually identifies something —
-  // an empty talondeck://add would open the app to nothing.
-  var hasPayload = ["tmdb", "imdb", "igdb", "isbn", "olid"].some(function (key) {
-    return params.get(key);
-  });
 
   var openLink = document.getElementById("open");
   if (hasPayload) {
     openLink.href = APP_SCHEME + "?" + params.toString();
   } else {
+    // An empty talondeck://add would open the app to nothing.
     openLink.remove();
   }
 </script>
