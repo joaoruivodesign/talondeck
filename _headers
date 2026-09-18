@@ -1,0 +1,9 @@
+# Cloudflare Pages / Netlify header rules. GitHub Pages ignores this file, so it is
+# harmless wherever the site happens to be served from.
+#
+# iOS will only trust an app-site-association file served as application/json, and a
+# file with no extension is guessed as application/octet-stream by most static hosts —
+# which is exactly what GitHub Pages did, and why the site moved here. Nothing reports
+# the mismatch: universal links simply never fire.
+/.well-known/apple-app-site-association
+  Content-Type: application/json
