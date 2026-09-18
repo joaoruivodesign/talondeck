@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "RHQ929DV4Q.joaoruivo.TalonDeck",
+          "RHQ929DV4Q.joaoruivo.TalonDeck.Studio"
+        ],
+        "components": [
+          { "/": "/talondeck/c/", "comment": "A shared card" },
+          { "/": "/talondeck/c/*", "comment": "A shared card, any sub-path" }
+        ]
+      }
+    ]
+  }
+}
